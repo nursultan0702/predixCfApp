@@ -3,4 +3,4 @@ applications:
   - name: demo-ts-app
     buildpack: java_buildpack
     path: target/demo-ts-app.jar
-    memory: 256M
+    memory: 1G
