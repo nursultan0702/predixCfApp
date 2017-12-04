@@ -1,0 +1,14 @@
+demo.timeseries:
+  queryUrlPrefix: https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1
+  ingestUrl: wss://gateway-predix-data-services.run.aws-usw02-pr.ice.predix.io/v1/stream/messages
+  zoneId: 7b8b4237-46b1-4105-9ee9-563fa1349789
+
+security.oauth2.client:
+  clientId: zsse
+  clientSecret: zsse123
+  accessTokenUri: https://zeinetsse.predix-uaa.run.aws-usw02-pr.ice.predix.io/oauth/token
+  userAuthorizationUri: https://zeinetsse.predix-uaa.run.aws-usw02-pr.ice.predix.io/oauth/authorize
+  tokenName: Bearer
+
+  spring.jpa.generate-ddl: true
+  spring.resources.add-mappings: true
