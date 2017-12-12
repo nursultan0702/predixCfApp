@@ -38,13 +38,12 @@ importScripts("px-vis-worker-scale.js");
 
 // Global storage vars
 var dataMapping = {},
-    quadtrees = {};
+    quadtrees = {}
+    quadtreeBuilt = false;
 
-function reply(data, time) {
+function reply(data) {
 
-  var time2 = null;
-  postMessage({'data': data, 'timeIn': time, 'timeOut': time2});
-
+  postMessage({'data': data});
 }
 
 /**
@@ -52,17 +51,17 @@ function reply(data, time) {
  *
  * @method updateData
  */
-function updateData(eventData, time) {
+function updateData(eventData) {
   dataMapping[eventData.chartId] = eventData.data.chartData;
-  reply(null, time);
+  reply(null);
 }
 
 
-function deleteData(eventData, time) {
+function deleteData(eventData) {
   delete dataMapping[eventData.chartId];
   delete quadtrees[eventData.chartId];
 
-  reply(null, time);
+  reply(null);
 }
 
 /**
@@ -336,15 +335,17 @@ function createSeriesQuadtree(data) {
  *
  * @method createQuadtree
  */
-function createQuadtree(data, time) {
-
+function createQuadtree(data) {
+  quadtreeBuilt = false;
 
   quadtrees[data.chartId] = data.data.searchType === 'pointPerSeries' ?
     createSeriesQuadtree(data) :
     // closestPoint & allInArea
     createSingleQuadtree(data);
 
-  reply(null, time);
+  quadtreeBuilt = true;
+
+  reply(null);
 }
 
 /**
@@ -681,12 +682,16 @@ function searchQuadtreeSeries(visData, dataObj, quadtreeData) {
       k;
 
   for(var i = 0; i < visData.keys.length; i++) {
-    k = visData.keys[i];
 
-    if(!visData.hardMute || !visData.mutedSeries[k]) {
+    if(quadtreeData[k]) {
 
-      result = quadtreeData[k].find(visData.mousePos[0], visData.mousePos[1], r);
-      dataObj = constructDataObj(result, dataObj, k, visData, false, xScale);
+      k = visData.keys[i];
+
+      if(!visData.hardMute || !visData.mutedSeries[k]) {
+
+        result = quadtreeData[k].find(visData.mousePos[0], visData.mousePos[1], r);
+        dataObj = constructDataObj(result, dataObj, k, visData, false, xScale);
+      }
     }
   }
 
@@ -726,7 +731,7 @@ function returnClosestsQuadtreePoints(eventData, time) {
   }
 
   delete dataObj.timeStampsTracker;
-  reply(dataObj, time);
+  reply(dataObj);
 }
 
 /**
@@ -734,7 +739,7 @@ function returnClosestsQuadtreePoints(eventData, time) {
  *
  * @method returnQuadtreePointsInArea
  */
-function returnQuadtreePointsInArea(eventData, time) {
+function returnQuadtreePointsInArea(eventData) {
   var visData = eventData.data,
       quadtreeData = quadtrees[eventData.chartId],
       dataObj = createDataStub();
@@ -743,7 +748,7 @@ function returnQuadtreePointsInArea(eventData, time) {
     dataObj = searchAreaBoxQuadtree(quadtreeData, visData, dataObj);
   }
 
-  reply(dataObj, time);
+  reply(dataObj);
 }
 
 function emptySeries(k) {
@@ -769,7 +774,7 @@ function addCrosshairData(dataObj, d) {
   return dataObj;
 }
 
-function determineExtents(eventData, time) {
+function determineExtents(eventData) {
   var visData = eventData.data,
       extents = null;
 
@@ -788,13 +793,11 @@ function determineExtents(eventData, time) {
     extents = extentCalc.determineExtents(dataMapping[eventData.chartId]);
   }
 
-  reply(extents, time);
+  reply(extents);
 }
 
 onmessage = function(e) {
 
-  //var time = this.performance.now();
- var time = null;
   switch(e.data.action) {
 
     case 'init':
@@ -804,7 +807,7 @@ onmessage = function(e) {
         importScripts("../pxd3/d3.min.js");
       }
 
-      reply(null, time);
+      reply(null);
       break;
 
     case 'registerCustomScript':
@@ -813,7 +816,7 @@ onmessage = function(e) {
         importScripts(e.data.data.url);
       }
 
-      reply(null, time);
+      reply(null);
       break;
 
     case 'runCustomFunction':
@@ -834,40 +837,51 @@ onmessage = function(e) {
         throw 'Couldn\'t run custom function ' + e.data.data.functionName + ' on custom Object ' + e.data.data.objectName + ' because the specified Object doesn\'t exist. Make sure you have loaded your custom script defining the custom object.';
       }
 
-      reply(result, time);
+      reply(result);
       break;
 
     case 'updateData':
-      updateData(e.data, time);
+      updateData(e.data);
       break;
 
     case 'createQuadtree':
-   // reply(null, time);
-      createQuadtree(e.data, time);
+      createQuadtree(e.data);
       break;
 
     case 'findQuadtreePoints':
-      returnClosestsQuadtreePoints(e.data, time);
+      if(quadtreeBuilt) {
+        returnClosestsQuadtreePoints(e.data);
+      } else {
+        reply(null);
+      }
       break;
 
     //we don't seem to use this
     case 'findQuadtreePointsInArea':
-      returnQuadtreePointsInArea(e.data, time);
+      if(quadtreeBuilt) {
+        returnQuadtreePointsInArea(e.data);
+      } else {
+        reply(null);
+      }
       break;
 
     case 'returnQuadtreeData':
-      reply(quadtrees[e.data.chartId], time);
+      if(quadtreeBuilt) {
+        reply(quadtrees[e.data.chartId]);
+      } else {
+        reply(null);
+      }
       break;
 
     case 'determineExtents':
-      determineExtents(e.data, time);
+      determineExtents(e.data);
       break;
 
     case 'unregisterChart':
-      deleteData(e.data, time);
+      deleteData(e.data);
       break;
 
     default:
-      reply(null, time);
+      reply(null);
   }
 }

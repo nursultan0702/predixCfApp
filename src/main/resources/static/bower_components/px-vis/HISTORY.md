@@ -1,3 +1,21 @@
+v4.5.1
+=================
+* Added check to area-svg for Polymer 2
+
+v4.5.0
+=================
+* Hybrid support: Polymer 1.X and 2.X
+
+v4.4.9
+=================
+* Fix for hard mute series disappearing from list with crosshair defaultData
+* Added check for quadtree before running search
+
+v4.4.8
+=================
+* Don't use strip whitespace in dynamic menu for IE measuring
+* various bug fixes and guards
+
 v4.4.7
 =================
 * Fix for multiaxis scale checking if dimensions are empty
@@ -137,6 +155,8 @@ v4.0.0
 * Fix for switching between svg and canvas at runtime
 * BREAKING CHANGE: default orientation in orientation definition is now `left` instead of `bottom`
 
+=======
+>>>>>>> Stashed changes
 v3.1.23
 ================
 * delete empty line above some behaviors definition that would prevent them from showing up in the API

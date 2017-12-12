@@ -1,0 +1,68 @@
+{
+  "name": "px-vis-timeseries",
+  "version": "3.3.0",
+  "main": [
+    "px-vis-timeseries.html"
+  ],
+  "ignore": [
+    "*.enc",
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "sass",
+    "*.md",
+    "scripts",
+    ".github",
+    "gulpfile.js",
+    "monogram-wdmk.png",
+    "wct.conf.json",
+    "test",
+    "OSS_Notice.pdf"
+  ],
+  "dependencies": {
+    "polymer": "#1.9 - 2",
+    "px-vis": "^4.0.0",
+    "iron-resizable-behavior": "^2.0.0",
+    "app-localize-behavior": "^2.0.0"
+  },
+  "devDependencies": {
+    "px-theme": "^3.0.0",
+    "px-defaults-design": "^2.0.0",
+    "px-normalize-design": "^1.0.0",
+    "px-box-sizing-design": "^1.0.0",
+    "px-flexbox-design": "^1.0.0",
+    "px-demo": "^3.0.0",
+    "px-demo-data": "^0.0.20",
+    "iron-ajax": "^2.0.0",
+    "promise-polyfill": "polymerlabs/promise-polyfill#^2.0.1",
+    "web-component-tester": "^6.3.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0",
+    "promise-polyfill": "^2.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "^1.9.0"
+      },
+      "devDependencies": {
+        "web-component-tester": "^5.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7.24"
+      }
+    }
+  },
+  "homepage": "https://github.com/PredixDev/px-vis-timeseries",
+  "_release": "3.3.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.3.0",
+    "commit": "76fe071c52181510926efdb9a57a4f448481ab22"
+  },
+  "_source": "https://github.com/PredixDev/px-vis-timeseries.git",
+  "_target": "^3.3.0",
+  "_originalSource": "px-vis-timeseries",
+  "_direct": true
+}

@@ -1,6 +1,6 @@
 {
   "name": "px-vis",
-  "version": "4.4.7",
+  "version": "4.5.1",
   "main": [
     "px-vis.html"
   ],
@@ -15,13 +15,13 @@
     "test"
   ],
   "dependencies": {
-    "polymer": "^1.9.0",
-    "px-tooltip": "^1.1.0",
-    "px-popover": "^2.0.0",
+    "polymer": "#1.9 - 2",
+    "px-tooltip": "^1.2.0",
+    "px-popover": "^2.1.0",
     "px-moment-imports": "^1.0.0",
-    "px-number-formatter": "^4.0.0",
+    "px-number-formatter": "^4.1.0",
     "px-d3-imports": "^2.0.0",
-    "px-icon-set": "^v2.0.0",
+    "px-icon-set": "^v2.1.0",
     "canvg": "^1.3.0",
     "iron-resizable-behavior": "^2.0.0",
     "neon-animation": "^2.0.0",
@@ -44,23 +44,38 @@
     "px-meta-buttons-design": "^1.0.0",
     "px-spacing-responsive-design": "^1.0.0",
     "px-icon-set": "^2.0.0",
-    "px-demo": "^2.0.0",
+    "px-demo": "^3.0.0",
     "px-shadows-design": "^1.0.0",
     "px-demo-data": "^0.0.20",
     "iron-ajax": "^2.0.0",
-    "px-layout-design": "^1.0.1"
+    "px-layout-design": "^1.0.1",
+    "web-component-tester": "^6.0.0"
   },
   "resolutions": {
-    "webcomponentsjs": "^0.7.24"
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "^1.9.0"
+      },
+      "devDependencies": {
+        "web-component-tester": "^5.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7.24"
+      }
+    }
   },
   "homepage": "https://github.com/PredixDev/px-vis",
-  "_release": "4.4.7",
+  "_release": "4.5.1",
   "_resolution": {
     "type": "version",
-    "tag": "v4.4.7",
-    "commit": "a01d81325c36bae595ea976cd7f346da4647c867"
+    "tag": "v4.5.1",
+    "commit": "f3a37f4c1805c15ed85e7b25a9693042f12c9da8"
   },
   "_source": "https://github.com/PredixDev/px-vis.git",
-  "_target": "^4.0.0",
-  "_originalSource": "px-vis"
+  "_target": "^4.5.1",
+  "_originalSource": "px-vis",
+  "_direct": true
 }

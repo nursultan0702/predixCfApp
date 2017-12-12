@@ -83,14 +83,32 @@ public class QueryController {
             resV=resV + getValue(jsArrayV.getJSONArray(i).toString());
         }
         resV = resV/jsArrayV.length();
-
-        Map<String,Integer> model = new HashMap<>();
-        model.put("gauge",res.intValue());
-        model.put("DischargePressure",resV.intValue());
+        
+        Map<String,String> model = new HashMap<>();
+        model.put("gauge",Integer.toString(res.intValue()));
+        model.put("DischargePressure",Integer.toString(resV.intValue()));
         return new ModelAndView("index",model);
     }
     public static double getValue(String inputString){
         String[] result = inputString.split(",");
         return Double.parseDouble(result[1]);
     }
+        @RequestMapping("/timeseries")
+        public String timeSeries(String start, String end){
+            if(start==null && end==null){
+            String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\"ALTUS TEMP SUM\",\"order\": \"desc\"}],\"start\": 1452112200000,\n" +
+"  \"end\": 1513049857000}", String.class, emptyMap()).getBody();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("tags");
+            JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+            return jsArray.toString();
+            }else{
+              String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\"ALTUS TEMP SUM\",\"order\": \"desc\"}],\"start\": "+start+",\n" +
+"  \"end\": "+end+"}", String.class, emptyMap()).getBody();
+              JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("tags");
+            JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+            return jsArray.toString();
+            }
+        }
 }

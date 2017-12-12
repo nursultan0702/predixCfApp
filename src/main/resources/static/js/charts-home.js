@@ -1,6 +1,25 @@
 /*global $, document, Chart, LINECHART, data, options, window*/
+var dataArray = new Array();
+var dateArray = new Array();
 $(document).ready(function () {
+     $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/timeseries",
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    debugger;
+                    var jsonArr = data;
+                    for(var i=jsonArr.length-1; i>=0;i--){
+                    var str = jsonArr[i].toString().split(",");
+                    $("#tble").append("<tr><td>"+todate(str[0])+"</td>\n\
+                                        <td>"+str[1]+"</td>\n\
+                                        <td>"+str[2]+"</td></tr>");
+                        dateArray.push(todate(str[0]));
+                        dataArray.push(str[1]);
 
+              
     'use strict';
 
     // Main Template Color
@@ -19,7 +38,7 @@ $(document).ready(function () {
             }
         },
         data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "June", "July"],
+            labels: dateArray.reverse(),
             datasets: [
                 {
                     label: "My First dataset",
@@ -41,65 +60,59 @@ $(document).ready(function () {
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 0,
-                    data: [50, 20, 60, 31, 52, 22, 40],
-                    spanGaps: false
-                },
-                {
-                    label: "My First dataset",
-                    fill: true,
-                    lineTension: 0.3,
-                    backgroundColor: "rgba(75,192,192,0.4)",
-                    borderColor: "rgba(75,192,192,1)",
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    borderWidth: 1,
-                    pointBorderColor: "rgba(75,192,192,1)",
-                    pointBackgroundColor: "#fff",
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: [65, 59, 30, 81, 46, 55, 30],
+                    data: dataArray.reverse(),
                     spanGaps: false
                 }
             ]
         }
     });
 
-
-    // ------------------------------------------------------- //
-    // Pie Chart
-    // ------------------------------------------------------ //
-    var PIECHART = $('#pieChart');
-    var myPieChart = new Chart(PIECHART, {
-        type: 'doughnut',
-        data: {
-            labels: [
-                "First",
-                "Second",
-                "Third"
-            ],
-            datasets: [
-                {
-                    data: [300, 50, 100],
-                    borderWidth: [1, 1, 1],
-                    backgroundColor: [
-                        brandPrimary,
-                        "rgba(75,192,192,1)",
-                        "#FFCE56"
-                    ],
-                    hoverBackgroundColor: [
-                        brandPrimary,
-                        "rgba(75,192,192,1)",
-                        "#FFCE56"
-                    ]
-                }]
-        }
-    });
-
+  }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
 });
+        function logout() {
+            location.reload(true);
+        }
+        function todate(stampDate){
+            var date = new Date(stampDate*1);
+            var day = date.getDate();
+            var month = 1 + date.getMonth();
+            var year = date.getFullYear();
+            if(month>9){
+            var formattedTime = day+"."+month+"."+year;
+        }else{
+            var formattedTime = day+".0"+month+"."+year;
+        }
+            return formattedTime;
+        }
+        function updateDate(){
+            $("#tble").html("");
+            var start = $("#startdate").val();
+            var end = $("#enddate").val();
+            var startunixtime = new Date(start).getTime();
+            var endunixtime = new Date(end).getTime();
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/timeseries?start="+startunixtime+"&end="+endunixtime+"",
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var jsonArr = data;
+                    for(var i=0; i<jsonArr.length;i++){
+                    console.log(jsonArr[i]+"OSOSOS");
+                    var str = jsonArr[i].toString().split(",");
+                    $("#tble").append("<tr><td>"+todate(str[0])+"</td>\n\
+                                        <td>"+str[1]+"</td>\n\
+                                        <td>"+str[2]+"</td></tr>");
+                }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        }

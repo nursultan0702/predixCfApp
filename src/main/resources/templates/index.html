@@ -21,6 +21,7 @@
     <link rel="shortcut icon" href="img/favicon.ico">
     <link rel="import" href="bower_components/px-gauge/px-gauge.html">
     <link rel="import" href="bower_components/px-simple-horizontal-bar-chart/px-simple-horizontal-bar-chart.html">
+    <link rel="import" href="bower_components/px-vis-timeseries/px-vis-timeseries.html">
     <!-- Font Awesome CDN-->
     <!-- you can replace it by local Font Awesome-->
     <script src="https://use.fontawesome.com/99347ac47f.js"></script>
@@ -181,17 +182,27 @@
             <div class="col-lg-4">
               <!-- Income-->
               <div class="card-block">
-                <table class="table">
-                  <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tags</th>
-                  </tr>
-                  </thead>
-                  <tbody id="predixTable">
-                  </tbody>
-                </table>
+                  <h4>ALTUS TEMP SUM</h4>
+                  <p>Start date:</p><input type="date" id="startdate"></br>
+                  <p>End date:</p><input type="date" id="enddate"> 
+                  <table class="table table-striped">
+                      <thead>
+                          <tr>
+                      <th>Date</th>
+                      <th>Value</th>
+                      <th>Signal</th>
+                          </tr>
+                      </thead>
+                      <tbody id="tble">
+                      </tbody>
+                  </table>
+                  <button onclick="updateDate()" class="btn btn-success">Update data</button>
               </div>
+            </div>
+              <div class="col-lg-4">
+               <div class="line-chart">
+                  <canvas id="lineCahrt"></canvas>
+                </div>
             </div>
           </div>
         </div>
@@ -223,32 +234,7 @@
     <script src="js/charts-home.js"></script>
     <script src="js/front.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "/tags",
-                dataType: 'json',
-                cache: false,
-                timeout: 600000,
-                success: function (data) {
-                    debugger;
-                    for(var i = 0; i<data.results.length; i++) {
-                        var j = i+1;
-                        $("#predixTable").append("<tr>\n" +
-                            "<th scope=\"row\">"+j+"</th>\n" +
-                            "<td>"+data.results[i]+"</td>\n" +
-                            "</tr>")
-                    }
-                },
-                error: function (e) {
-                    alert(e);
-                }
-            });
-        });
-        function logout() {
-            location.reload(true);
-        }
+
     </script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
     <!---->
