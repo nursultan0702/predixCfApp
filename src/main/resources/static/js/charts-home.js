@@ -10,8 +10,16 @@ $(document).ready(function () {
                 timeout: 600000,
                 success: function (data) {
                     debugger;
-                    var jsonArr = data;
-                    for(var i=jsonArr.length-1; i>=0;i--){
+                    var AjsonArr = data;
+                   drawChart(AjsonArr);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+});
+function drawChart(jsonArr){
+     for(var i=jsonArr.length-1; i>=0;i--){
                     var str = jsonArr[i].toString().split(",");
                     $("#tble").append("<tr><td>"+todate(str[0])+"</td>\n\
                                         <td>"+str[1]+"</td>\n\
@@ -68,12 +76,7 @@ $(document).ready(function () {
     });
 
   }
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-});
+}
         function logout() {
             location.reload(true);
         }
@@ -110,6 +113,7 @@ $(document).ready(function () {
                                         <td>"+str[1]+"</td>\n\
                                         <td>"+str[2]+"</td></tr>");
                 }
+                drawChart(jsonArr);
                 },
                 error: function (e) {
                     console.log(e);

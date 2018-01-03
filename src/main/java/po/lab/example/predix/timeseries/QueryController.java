@@ -62,7 +62,7 @@ public class QueryController {
         model.put("result", result);
         return new ModelAndView("index");
     }
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public ModelAndView Index(@RequestParam(defaultValue = "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"Compressor-2017:Temperature\",\"order\": \"desc\"}]}") String requestBody) throws Exception {
         String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", requestBody, String.class, emptyMap()).getBody();
         String velocityResult = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"Compressor-2017:DischargePressure\",\"order\": \"desc\"}]}", String.class, emptyMap()).getBody();
@@ -83,7 +83,7 @@ public class QueryController {
             resV=resV + getValue(jsArrayV.getJSONArray(i).toString());
         }
         resV = resV/jsArrayV.length();
-        
+
         Map<String,String> model = new HashMap<>();
         model.put("gauge",Integer.toString(res.intValue()));
         model.put("DischargePressure",Integer.toString(resV.intValue()));
@@ -97,18 +97,29 @@ public class QueryController {
         public String timeSeries(String start, String end){
             if(start==null && end==null){
             String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\"ALTUS TEMP SUM\",\"order\": \"desc\"}],\"start\": 1452112200000,\n" +
-"  \"end\": 1513049857000}", String.class, emptyMap()).getBody();
+            "  \"end\": 1513049857000}", String.class, emptyMap()).getBody();
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("tags");
             JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
             return jsArray.toString();
             }else{
               String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\"ALTUS TEMP SUM\",\"order\": \"desc\"}],\"start\": "+start+",\n" +
-"  \"end\": "+end+"}", String.class, emptyMap()).getBody();
-              JSONObject jsonObject = new JSONObject(result);
+            "  \"end\": "+end+"}", String.class, emptyMap()).getBody();
+            JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("tags");
             JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
             return jsArray.toString();
             }
+        }
+        @RequestMapping("/login")
+        public String loginValidate(String username, String password){
+            if(username.equals("zsse") && password.equals("zsse123")){
+            return "ok";
+            }
+            return "missmatch";
+        }
+        @RequestMapping("/")
+        public ModelAndView firstload(){
+        return new ModelAndView("login");
         }
 }
