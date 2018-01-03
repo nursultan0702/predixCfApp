@@ -51,7 +51,8 @@ public class Application {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-				.and().formLogin().defaultSuccessUrl("/", false);
+				.and().formLogin().defaultSuccessUrl("/**", false)
+                        .and().formLogin().defaultSuccessUrl("zeinetsse-ts-app.run.aws-usw02-pr.ice.predix.io/", false);
 
 	}
 
