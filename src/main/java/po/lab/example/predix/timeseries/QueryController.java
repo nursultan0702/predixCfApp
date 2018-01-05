@@ -94,7 +94,7 @@ public class QueryController {
         return Double.parseDouble(result[1]);
     }
         @RequestMapping("/timeseries")
-        public String timeSeries(String start, String end){
+        public String timeSeries(String start, String end , String tag){
             if(start==null && end==null){
             String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\"ALTUS TEMP SUM\",\"order\": \"desc\"}],\"start\": 1452112200000,\n" +
             "  \"end\": 1513049857000}", String.class, emptyMap()).getBody();
@@ -103,7 +103,7 @@ public class QueryController {
             JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
             return jsArray.toString();
             }else{
-              String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\"ALTUS TEMP SUM\",\"order\": \"desc\"}],\"start\": "+start+",\n" +
+              String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\""+tag+"\",\"order\": \"desc\"}],\"start\": "+start+",\n" +
             "  \"end\": "+end+"}", String.class, emptyMap()).getBody();
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("tags");

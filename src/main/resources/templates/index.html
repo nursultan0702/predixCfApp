@@ -162,13 +162,7 @@ f<!DOCTYPE html>
                 <h2 class="display h4">Predix Chart</h2>
                 <p> px-simple-horizontal-bar-chart</p>
                 <div class="line-chart">
-                  <px-simple-horizontal-bar-chart
-                          width="auto"
-                          height="auto"
-                          bar-labels="percentage"
-                          legend-labels='["Bar One","Bar Two","Bar Three","Bar Four","Bar Five","Bar Six"]'
-                          chart-data='[29,20,15,18,8,10]'>
-                  </px-simple-horizontal-bar-chart>
+                  <div id="tester" style="width:90%;height:250px;"></div>
                 </div>
               </div>
             </div>
@@ -179,30 +173,42 @@ f<!DOCTYPE html>
       <section class="statistics section-padding section-no-padding-bottom">
         <div class="container-fluid">
           <div class="row d-flex align-items-stretch">
-            <div class="col-lg-4">
+            <div class="col-lg-6">
               <!-- Income-->
               <div class="card-block">
-                  <h4>ALTUS TEMP SUM</h4>
+                  <h4 id="selectedTag">ALTUS TEMP SUM</h4>
+                  <select id="stag">
+                    <option value="ALTUS TEMP AVG">ALTUS TEMP AVG</option>
+                    <option value="ALTUS TEMP SUM">ALTUS TEMP SUM</option>
+                    <option value="Altus.Application.IoConfig_Globals_Mapping.AI3">Altus.Application.IoConfig_Globals_Mapping.AI3</option>
+                    <option value="Altus.Application.IoConfig_Globals_Mapping.AI4">Altus.Application.IoConfig_Globals_Mapping.AI4</option>
+                    <option value="Altus.Application.IoConfig_Globals_Mapping.EA_AI5">Altus.Application.IoConfig_Globals_Mapping.EA_AI5</option>
+                    <option value="Altus.Application.POU.speed_m">Altus.Application.POU.speed_m</option>
+                    <option value="Compressor-2015:CompressionRatio">Compressor-2015:CompressionRatio</option>
+                    <option value="Compressor-2017:DischargePressure">Compressor-2017:DischargePressure</option>
+                    <option value="Compressor-2017:MaximumPressure">Compressor-2017:MaximumPressure</option>
+                    <option value="Compressor-2017:MinimumPressure">Compressor-2017:MinimumPressure</option>
+                    <option value="Compressor-2017:SuctionPressure">Compressor-2017:SuctionPressure</option>
+                    <option value="Compressor-2017:Temperature">Compressor-2017:Temperature</option>
+                    <option value="Compressor-2017:Velocity">Compressor-2017:Velocity</option>
+                    <option value="Compressor-2017:isomerization-reactor-output1">Compressor-2017:isomerization-reactor-output1</option>
+                    <option value="HeaderP_U2">HeaderP_U2</option>
+                    <option value="NGP_U2">NGP_U2</option>
+                    <option value="P1_U2">P1_U2</option>
+                    <option value="P2_U2">P2_U2</option>
+                    <option value="PLC01.Application.POU.speed_m">PLC01.Application.POU.speed_m</option>
+                    <option value="PLC01.Application.POU.speed_ton_et">PLC01.Application.POU.speed_ton_et</option>
+                    <option value="T1_U2">T1_U2</option>
+                    <option value="T2_U2">T2_U2</option>
+                    <option value="T5Avg_U2">T5Avg_U2</option>
+                    <option value="T5Spr_U2">T5Spr_U2</option>
+                    <option value="[PredixU2]PGM_Fuel.Npt">[PredixU2]PGM_Fuel.Npt</option>
+                  </select>
                   <p>Start date:</p><input type="date" id="startdate"></br>
                   <p>End date:</p><input type="date" id="enddate"> 
-                  <table class="table table-striped">
-                      <thead>
-                          <tr>
-                      <th>Date</th>
-                      <th>Value</th>
-                      <th>Signal</th>
-                          </tr>
-                      </thead>
-                      <tbody id="tble">
-                      </tbody>
-                  </table>
                   <button onclick="updateDate()" class="btn btn-success">Update data</button>
+                  <div id="myDivts"><!-- Plotly chart will be drawn inside this DIV --></div>
               </div>
-            </div>
-              <div class="col-lg-4">
-               <div class="line-chart">
-                  <canvas id="lineCahrt"></canvas>
-                </div>
             </div>
           </div>
         </div>
@@ -233,8 +239,18 @@ f<!DOCTYPE html>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script src="js/charts-home.js"></script>
     <script src="js/front.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
+            TESTER = document.getElementById('tester');
 
+            Plotly.plot( TESTER, [{
+                x: [1, 2, 3, 4, 5],
+                y: [1, 2, 4, 8, 16] }], { 
+                margin: { t: 0 } } );
+
+            /* Current Plotly.js version */
+            console.log( Plotly.BUILD );
+            
     </script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
     <!---->

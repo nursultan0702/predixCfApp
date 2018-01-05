@@ -21,61 +21,17 @@ $(document).ready(function () {
 function drawChart(jsonArr){
      for(var i=jsonArr.length-1; i>=0;i--){
                     var str = jsonArr[i].toString().split(",");
-                    $("#tble").append("<tr><td>"+todate(str[0])+"</td>\n\
-                                        <td>"+str[1]+"</td>\n\
-                                        <td>"+str[2]+"</td></tr>");
                         dateArray.push(todate(str[0]));
                         dataArray.push(str[1]);
-
-              
-    'use strict';
-
-    // Main Template Color
-    var brandPrimary = '#33b35a';
-
-
-    // ------------------------------------------------------- //
-    // Line Chart
-    // ------------------------------------------------------ //
-    var LINECHART = $('#lineCahrt');
-    var myLineChart = new Chart(LINECHART, {
-        type: 'line',
-        options: {
-            legend: {
-                display: false
-            }
-        },
-        data: {
-            labels: dateArray.reverse(),
-            datasets: [
+                        var data = [
                 {
-                    label: "My First dataset",
-                    fill: true,
-                    lineTension: 0.3,
-                    backgroundColor: "rgba(77, 193, 75, 0.4)",
-                    borderColor: brandPrimary,
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    borderWidth: 1,
-                    pointBorderColor: brandPrimary,
-                    pointBackgroundColor: "#fff",
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: brandPrimary,
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 0,
-                    data: dataArray.reverse(),
-                    spanGaps: false
+                  x: dateArray,
+                  y: dataArray,
+                  type: 'scatter'
                 }
-            ]
-        }
-    });
-
+              ];
   }
+                Plotly.newPlot('myDivts', data);
 }
         function logout() {
             location.reload(true);
@@ -85,35 +41,34 @@ function drawChart(jsonArr){
             var day = date.getDate();
             var month = 1 + date.getMonth();
             var year = date.getFullYear();
+            var hours = date.getHours();
+            var minute = date.getMinutes();
+            var seconds = date.getSeconds();
             if(month>9){
-            var formattedTime = day+"."+month+"."+year;
+            var formattedTime = day+"."+month+"."+year+" "+hours+":"+minute+":"+seconds;
         }else{
-            var formattedTime = day+".0"+month+"."+year;
+            var formattedTime = day+".0"+month+"."+year+" "+hours+":"+minute+":"+seconds;
         }
             return formattedTime;
         }
         function updateDate(){
-            $("#tble").html("");
+            $("#myDivts").html("");
+            $("#selectedTag").html("");
             var start = $("#startdate").val();
             var end = $("#enddate").val();
+            var tag = $("#stag").val();
             var startunixtime = new Date(start).getTime();
             var endunixtime = new Date(end).getTime();
             $.ajax({
                 type: "GET",
                 contentType: "application/json",
-                url: "/timeseries?start="+startunixtime+"&end="+endunixtime+"",
+                url: "/timeseries?start="+startunixtime+"&end="+endunixtime+"&tag="+tag,
                 cache: false,
                 timeout: 600000,
                 success: function (data) {
                     var jsonArr = data;
-                    for(var i=0; i<jsonArr.length;i++){
-                    console.log(jsonArr[i]+"OSOSOS");
-                    var str = jsonArr[i].toString().split(",");
-                    $("#tble").append("<tr><td>"+todate(str[0])+"</td>\n\
-                                        <td>"+str[1]+"</td>\n\
-                                        <td>"+str[2]+"</td></tr>");
-                }
                 drawChart(jsonArr);
+                $("#selectedTag").append(tag);
                 },
                 error: function (e) {
                     console.log(e);
