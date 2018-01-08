@@ -1,5 +1,5 @@
 f<!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +7,27 @@ f<!DOCTYPE html>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        var myMap,
+            myPlacemark;
+
+        function init(){
+            myMap = new ymaps.Map("map", {
+                center: [55.76, 37.64],
+                zoom: 7
+            });
+
+            myPlacemark = new ymaps.Placemark([55.76, 37.64], {
+                hintContent: 'Москва!',
+                balloonContent: 'Столица России'
+            });
+
+            myMap.geoObjects.add(myPlacemark);
+        }
+    </script>
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Google fonts - Roboto -->
@@ -38,8 +59,8 @@ f<!DOCTYPE html>
     <nav class="side-navbar">
       <div class="side-navbar-wrapper">
         <div class="sidenav-header d-flex align-items-center justify-content-center">
-          <div class="sidenav-header-inner text-center"><img src="img/avatar-1.jpg" alt="person" class="img-fluid rounded-circle">
-            <h2 class="h5 text-uppercase">zsse</h2><span class="text-uppercase">Admin</span>
+          <div class="sidenav-header-inner text-center">
+            <h2 class="h5 text-uppercase">zsse</h2><span class="text-uppercase">Operator</span>
           </div>
           <div class="sidenav-header-logo"><a href="index.html" class="brand-small text-center"> <strong>B</strong><strong class="text-primary">D</strong></a></div>
         </div>
@@ -90,17 +111,14 @@ f<!DOCTYPE html>
                 <li class="nav-item dropdown">
                   <ul aria-labelledby="notifications" class="dropdown-menu">
                     <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                        <div class="msg-profile"> <img src="../../../../../../../Хлмангооооу/bootstrap-dashboard/img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>
                         <div class="msg-body">
                           <h3 class="h5">Jason Doe</h3><span>sent you a direct message</span><small>3 days ago at 7:58 pm - 10.06.2014</small>
                         </div></a></li>
                     <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                        <div class="msg-profile"> <img src="bootstrap-dashboard/img/avatar-2.jpg" alt="..." class="img-fluid rounded-circle"></div>
                         <div class="msg-body">
                           <h3 class="h5">Frank Williams</h3><span>sent you a direct message</span><small>3 days ago at 7:58 pm - 10.06.2014</small>
                         </div></a></li>
                     <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                        <div class="msg-profile"> <img src="bootstrap-dashboard/img/avatar-3.jpg" alt="..." class="img-fluid rounded-circle"></div>
                         <div class="msg-body">
                           <h3 class="h5">Ashley Wood</h3><span>sent you a direct message</span><small>3 days ago at 7:58 pm - 10.06.2014</small>
                         </div></a></li>
@@ -119,30 +137,36 @@ f<!DOCTYPE html>
         <div class="container-fluid">
           <div class="row d-flex align-items-md-stretch">
             <!-- To Do List-->
-            <div class="col-lg-3 col-md-6">
-              <div class="wrapper to-do">
-                <header>
-                  <h2 class="display h4">DischargePressure</h2>
-                  <p>DischargePressure average values</p>
-                </header>
-                <px-gauge  value = "{{DischargePressure}}"
-                           min="0"
-                           max="100"
-                           bar-width="0"
-                           unit="pt"
-                           error="[ [0, 12], [79, 100] ]"
-                           abnormal="[  [12, 32], [68, 79]  ]"
-                           anomaly="[ [32, 45],  [54, 68]  ]"
-                           normal="[ [45, 54] ]" style="height: 200px; width: 200px">
-                </px-gauge>
+            <div class="col-lg-4 col-md-6">
+              <div class="pie-chart">
+                <div id="map" style="width: 386px; height: 268px"></div>
               </div>
             </div>
             <!-- Pie Chart-->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6" style="padding-left: 110px;">
               <div class="wrapper project-progress">
                 <h2 class="display h4">Temperature</h2>
-                <p> Compressor-2017:Temperature average values</p>
+                <p>Temperature average values</p>
                 <div class="pie-chart">
+                  <px-gauge  value = "{{DischargePressure}}"
+                             min="0"
+                             max="100"
+                             bar-width="0"
+                             unit="pt"
+                             error="[ [0, 12], [79, 100] ]"
+                             abnormal="[  [12, 32], [68, 79]  ]"
+                             anomaly="[ [32, 45],  [54, 68]  ]"
+                             normal="[ [45, 54] ]" style="height: 200px; width: 200px">
+                  </px-gauge>
+                </div>
+              </div>
+            </div>
+            <!-- Line Chart -->
+            <div class="col-lg-4 col-md-6" style="padding-left: 120px;">
+              <div class="wrapper sales-report">
+                <h2 class="display h4">Predix Chart</h2>
+                <p> px-simple-horizontal-bar-chart</p>
+                <div class="line-chart">
                   <px-gauge  value = "{{gauge}}"
                              min="0"
                              max="100"
@@ -156,77 +180,88 @@ f<!DOCTYPE html>
                 </div>
               </div>
             </div>
-            <!-- Line Chart -->
-            <div class="col-lg-6 col-md-12 flex-lg-last flex-md-first align-self-baseline">
-              <div class="wrapper sales-report">
-                <h2 class="display h4">Predix Chart</h2>
-                <p> px-simple-horizontal-bar-chart</p>
-                <div class="line-chart">
-                  <div id="tester" style="width:90%;height:250px;"></div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
       <!-- Statistics Section-->
       <section class="statistics section-padding section-no-padding-bottom">
+        <div class="col-lge">
+          <h2>Last updates</h2>
+          <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+              <th>Name of tag</th>
+              <th>Last update date</th>
+              <th>Value</th>
+              <th>Unit</th>
+            </tr>
+            </thead>
+            <tbody id = "tble">
+
+            </tbody>
+          </table>
+        </div>
         <div class="container-fluid">
           <div class="row d-flex align-items-stretch">
-            <div class="col-lg-6">
-              <!-- Income-->
-              <div class="card-block">
-                  <h4 id="selectedTag">ALTUS TEMP SUM</h4>
-                  <select id="stag">
-                    <option value="ALTUS TEMP AVG">ALTUS TEMP AVG</option>
-                    <option value="ALTUS TEMP SUM">ALTUS TEMP SUM</option>
-                    <option value="Altus.Application.IoConfig_Globals_Mapping.AI3">Altus.Application.IoConfig_Globals_Mapping.AI3</option>
-                    <option value="Altus.Application.IoConfig_Globals_Mapping.AI4">Altus.Application.IoConfig_Globals_Mapping.AI4</option>
-                    <option value="Altus.Application.IoConfig_Globals_Mapping.EA_AI5">Altus.Application.IoConfig_Globals_Mapping.EA_AI5</option>
-                    <option value="Altus.Application.POU.speed_m">Altus.Application.POU.speed_m</option>
-                    <option value="Compressor-2015:CompressionRatio">Compressor-2015:CompressionRatio</option>
-                    <option value="Compressor-2017:DischargePressure">Compressor-2017:DischargePressure</option>
-                    <option value="Compressor-2017:MaximumPressure">Compressor-2017:MaximumPressure</option>
-                    <option value="Compressor-2017:MinimumPressure">Compressor-2017:MinimumPressure</option>
-                    <option value="Compressor-2017:SuctionPressure">Compressor-2017:SuctionPressure</option>
-                    <option value="Compressor-2017:Temperature">Compressor-2017:Temperature</option>
-                    <option value="Compressor-2017:Velocity">Compressor-2017:Velocity</option>
-                    <option value="Compressor-2017:isomerization-reactor-output1">Compressor-2017:isomerization-reactor-output1</option>
-                    <option value="HeaderP_U2">HeaderP_U2</option>
-                    <option value="NGP_U2">NGP_U2</option>
-                    <option value="P1_U2">P1_U2</option>
-                    <option value="P2_U2">P2_U2</option>
-                    <option value="PLC01.Application.POU.speed_m">PLC01.Application.POU.speed_m</option>
-                    <option value="PLC01.Application.POU.speed_ton_et">PLC01.Application.POU.speed_ton_et</option>
-                    <option value="T1_U2">T1_U2</option>
-                    <option value="T2_U2">T2_U2</option>
-                    <option value="T5Avg_U2">T5Avg_U2</option>
-                    <option value="T5Spr_U2">T5Spr_U2</option>
-                    <option value="[PredixU2]PGM_Fuel.Npt">[PredixU2]PGM_Fuel.Npt</option>
-                  </select>
-                  <p>Start date:</p><input type="date" id="startdate"></br>
-                  <p>End date:</p><input type="date" id="enddate"> 
-                  <button onclick="updateDate()" class="btn btn-success">Update data</button>
-                  <div id="myDivts"><!-- Plotly chart will be drawn inside this DIV --></div>
-              </div>
+            <div class="col-lg-4" style="padding-top: 10px;">
+                <h4 id="selectedTag">ALTUS TEMP SUM</h4>
+              <select id="stag" class="form-control">
+                <option value="ALTUS TEMP AVG">ALTUS TEMP AVG</option>
+                <option value="ALTUS TEMP SUM">ALTUS TEMP SUM</option>
+                <option value="Altus.Application.IoConfig_Globals_Mapping.AI3">Altus.Application.IoConfig_Globals_Mapping.AI3</option>
+                <option value="Altus.Application.IoConfig_Globals_Mapping.AI4">Altus.Application.IoConfig_Globals_Mapping.AI4</option>
+                <option value="Altus.Application.IoConfig_Globals_Mapping.EA_AI5">Altus.Application.IoConfig_Globals_Mapping.EA_AI5</option>
+                <option value="Altus.Application.POU.speed_m">Altus.Application.POU.speed_m</option>
+                <option value="Compressor-2015:CompressionRatio">Compressor-2015:CompressionRatio</option>
+                <option value="Compressor-2017:DischargePressure">Compressor-2017:DischargePressure</option>
+                <option value="Compressor-2017:MaximumPressure">Compressor-2017:MaximumPressure</option>
+                <option value="Compressor-2017:MinimumPressure">Compressor-2017:MinimumPressure</option>
+                <option value="Compressor-2017:SuctionPressure">Compressor-2017:SuctionPressure</option>
+                <option value="Compressor-2017:Temperature">Compressor-2017:Temperature</option>
+                <option value="Compressor-2017:Velocity">Compressor-2017:Velocity</option>
+                <option value="Compressor-2017:isomerization-reactor-output1">Compressor-2017:isomerization-reactor-output1</option>
+                <option value="HeaderP_U2">HeaderP_U2</option>
+                <option value="NGP_U2">NGP_U2</option>
+                <option value="P1_U2">P1_U2</option>
+                <option value="P2_U2">P2_U2</option>
+                <option value="PLC01.Application.POU.speed_m">PLC01.Application.POU.speed_m</option>
+                <option value="PLC01.Application.POU.speed_ton_et">PLC01.Application.POU.speed_ton_et</option>
+                <option value="T1_U2">T1_U2</option>
+                <option value="T2_U2">T2_U2</option>
+                <option value="T5Avg_U2">T5Avg_U2</option>
+                <option value="T5Spr_U2">T5Spr_U2</option>
+                <option value="[PredixU2]PGM_Fuel.Npt">[PredixU2]PGM_Fuel.Npt</option>
+              </select>
+                <lable>Chart type</lable>
+                <select  id="chartType" class="form-control">
+                    <option value="timeseries">timeseries</option>
+                    <option value="pointchart">pointchart</option>
+                </select>
             </div>
+            <div class="col-lg-4">
+                    <label>Start date:</label><input type="date" id="startdate" class="form-control" style="width: 200px; height: 40px">
+                    <label>End date:</label><input type="date" id="enddate" class="form-control" style="width: 200px; height: 40px">
+
+            </div>
+              <div class="col-lg-4" style="padding-top: 40px">
+                  <div class="i-checks">
+                      <input id="checkboxCustom1" type="checkbox" value="live" class="form-control-custom">
+                      <label for="checkboxCustom1">Live data</label>
+                  </div>
+                  <button onclick="updateDate()" class="btn btn-success">Update data</button>
+              </div>
+          </div>
+            <div class="col-lg-12">
+              <!-- Income-->
+              <div class="container">
+                  <div id="myDivts"><!-- Plotly chart will be drawn inside this DIV --></div>
+                  <div id="myDivPoint"></div>
+                  <div id="graph"></div>
+              </div>
           </div>
         </div>
       </section>
       <!-- Updates Section -->
-      <footer class="main-footer">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-sm-6">
-              <p>Your company &copy; 2017-2019</p>
-            </div>
-            <div class="col-sm-6 text-right">
-              <p>Design by <a href="https://bootstrapious.com" class="external">Bootstrapious</a></p>
-              <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
     <!-- Javascript files-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -241,26 +276,7 @@ f<!DOCTYPE html>
     <script src="js/front.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
-            TESTER = document.getElementById('tester');
 
-            Plotly.plot( TESTER, [{
-                x: [1, 2, 3, 4, 5],
-                y: [1, 2, 4, 8, 16] }], { 
-                margin: { t: 0 } } );
-
-            /* Current Plotly.js version */
-            console.log( Plotly.BUILD );
-            
-    </script>
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
-    <!---->
-    <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='//www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>
   </body>
 </html>

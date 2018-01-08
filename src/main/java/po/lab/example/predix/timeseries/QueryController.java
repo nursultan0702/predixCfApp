@@ -15,6 +15,8 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.constraints.Null;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,8 +48,12 @@ public class QueryController {
     public String queryTags() throws Exception {
         String resultTags = restTemplate.getForEntity(queryUrlPrefix + "/tags", String.class, emptyMap()).getBody();
         JSONObject tags = new JSONObject(resultTags);
-       // JSONArray tagsarray = tags.getJSONArray("results");
-        return tags.toString();
+        JSONArray tagsarray = tags.getJSONArray("results");
+        ArrayList<String> listdata = new ArrayList<String>();
+        for (int i=0;i<tagsarray.length();i++){
+            listdata.add(tagsarray.getString(i));
+        }
+        return tagsarray.toString();
     }
 
     @RequestMapping("/latest")
@@ -95,7 +101,7 @@ public class QueryController {
     }
         @RequestMapping("/timeseries")
         public String timeSeries(String start, String end , String tag){
-            if(start==null && end==null){
+            if(start==null && end==null || start.equals("NaN")){
             String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\"ALTUS TEMP SUM\",\"order\": \"desc\"}],\"start\": 1452112200000,\n" +
             "  \"end\": 1513049857000}", String.class, emptyMap()).getBody();
             JSONObject jsonObject = new JSONObject(result);
@@ -121,5 +127,43 @@ public class QueryController {
         @RequestMapping("/")
         public ModelAndView firstload(){
         return new ModelAndView("login");
+        }
+        @RequestMapping("/timeseries/table")
+    public String getTable(){
+            String resultJson = "{\"values\":[";
+            //get All tags
+            String resultTags = restTemplate.getForEntity(queryUrlPrefix + "/tags", String.class, emptyMap()).getBody();
+            JSONObject tags = new JSONObject(resultTags);
+            JSONArray tagsarray = tags.getJSONArray("results");
+            ArrayList<String> listdata = new ArrayList<String>();
+            for (int i=0;i<tagsarray.length();i++){
+                listdata.add(tagsarray.getString(i));
+            }
+            int i = 0;
+            // get last values of tags
+            for (String str:listdata) {
+                i++;
+                String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints/latest", "{\n" +
+                        "  \"tags\": [\n" +
+                        "    {\n" +
+                        "      \"name\": \"" + str + "\"\n" +
+                        "    }\n" +
+                        "  ]\n" +
+                            "}", String.class, emptyMap()).getBody();
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("tags");
+                JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+                    String resjs = jsArray.toString();
+                    resjs = resjs.replace("[","");
+                    resjs = resjs.replace("]","");
+                   // r1esultJson += "{\"" + str + "\" = \"" + resjs + "\"}";
+                    if(i==listdata.size()) {
+                        resultJson += "{\"name\":\"" + str + "\", \"value\":\"" + resjs + "\"}]";
+                    }else{
+                        resultJson += "{\"name\":\"" + str + "\", \"value\":\"" + resjs + "\"},";
+                    }
+
+            }
+            return resultJson+="}";
         }
 }
