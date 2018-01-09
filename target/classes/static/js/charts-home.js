@@ -125,9 +125,11 @@ function drawChart(jsonArr){
                         var chartType = $("#chartType").val();
                         if (chartType == "timeseries") {
                             $("#myDivPoint").html("");
+                            $("#graph").html("");
                             drawChart(jsonArr);
                         } else if (chartType == "pointchart") {
                             $("#myDivts").html("");
+                            $("#graph").html("");
                             pointChart(jsonArr);
                         }
                         $("#selectedTag").append(tag);
