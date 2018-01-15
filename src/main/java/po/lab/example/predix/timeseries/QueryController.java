@@ -77,31 +77,38 @@ public class QueryController {
     }
     @RequestMapping("/index")
     public ModelAndView Index(@RequestParam(defaultValue = "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"NGP_U2\",\"order\": \"desc\"}]}") String requestBody) throws Exception {
-        String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", requestBody, String.class, emptyMap()).getBody();
-        String velocityResult = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"[PredixU2]PGM_Fuel.Npt" +
-                "\",\"order\": \"desc\"}]}", String.class, emptyMap()).getBody();
-        JSONObject jsonObject = new JSONObject(result); 
-        Double res = 0.0;
-        JSONArray jsonArray = jsonObject.getJSONArray("tags");
-        JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
-        for (int i = 0; i<jsArray.length();i++){
-            res=res + getValue(jsArray.getJSONArray(i).toString());
-        }
-        res = res/jsArray.length();
+        try {
+            String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", requestBody, String.class, emptyMap()).getBody();
+            String velocityResult = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"[PredixU2]PGM_Fuel.Npt" +
+                    "\",\"order\": \"desc\"}]}", String.class, emptyMap()).getBody();
+            JSONObject jsonObject = new JSONObject(result);
+            Double res = 0.0;
+            JSONArray jsonArray = jsonObject.getJSONArray("tags");
+            JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+            for (int i = 0; i < jsArray.length(); i++) {
+                res = res + getValue(jsArray.getJSONArray(i).toString());
+            }
+            res = res / jsArray.length();
 
-        JSONObject jsonObjectV = new JSONObject(velocityResult);
-        Double resV = 0.0;
-        JSONArray jsonArrayV = jsonObjectV.getJSONArray("tags");
-        JSONArray jsArrayV = jsonArrayV.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
-        for (int i = 0; i<jsArrayV.length();i++){
-            resV=resV + getValue(jsArrayV.getJSONArray(i).toString());
-        }
-        resV = resV/jsArrayV.length();
+            JSONObject jsonObjectV = new JSONObject(velocityResult);
+            Double resV = 0.0;
+            JSONArray jsonArrayV = jsonObjectV.getJSONArray("tags");
+            JSONArray jsArrayV = jsonArrayV.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+            for (int i = 0; i < jsArrayV.length(); i++) {
+                resV = resV + getValue(jsArrayV.getJSONArray(i).toString());
+            }
+            resV = resV / jsArrayV.length();
 
-        Map<String,String> model = new HashMap<>();
-        model.put("gauge",Integer.toString(res.intValue()));
-        model.put("DischargePressure",Integer.toString(resV.intValue()));
-        return new ModelAndView("index",model);
+            Map<String, String> model = new HashMap<>();
+            model.put("gauge", Integer.toString(res.intValue()));
+            model.put("DischargePressure", Integer.toString(resV.intValue()));
+            return new ModelAndView("index", model);
+        }catch (Exception wx){
+            Map<String, String> model = new HashMap<>();
+            model.put("gauge", Integer.toString(0));
+            model.put("DischargePressure", Integer.toString(0));
+            return  new ModelAndView("index",model);
+        }
     }
     public static double getValue(String inputString) throws Exception{
         String[] result = inputString.split(",");
