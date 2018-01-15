@@ -57,8 +57,15 @@ public class QueryController {
     }
 
     @RequestMapping("/latest")
-    public String queryLatestValues(@RequestParam(defaultValue = "{\"tags\":[{\"name\":\"Compressor-2015:CompressionRatio\"}]}") String requestBody) throws Exception {
-        return restTemplate.postForEntity(queryUrlPrefix + "/datapoints/latest", requestBody, String.class, emptyMap()).getBody();
+    public String queryLatestValues(String tag) throws Exception{
+        String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints/latest", "{\"tags\":[{\"name\":\""+tag+"\"}]}", String.class, emptyMap()).getBody();
+        JSONObject jsonObject = new JSONObject(result);
+        JSONArray jsonArray = jsonObject.getJSONArray("tags");
+        JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+        String resjs = jsArray.toString();
+        resjs = resjs.replace("[","");
+        resjs = resjs.replace("]","");
+        return resjs;
     }
     @RequestMapping("/getTemp")
     public ModelAndView getTemp(@RequestParam(defaultValue = "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"Compressor-2017:Temperature\",\"order\": \"desc\"}]}") String requestBody) throws Exception {
@@ -69,10 +76,11 @@ public class QueryController {
         return new ModelAndView("index");
     }
     @RequestMapping("/index")
-    public ModelAndView Index(@RequestParam(defaultValue = "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"Compressor-2017:Temperature\",\"order\": \"desc\"}]}") String requestBody) throws Exception {
+    public ModelAndView Index(@RequestParam(defaultValue = "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"NGP_U2\",\"order\": \"desc\"}]}") String requestBody) throws Exception {
         String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", requestBody, String.class, emptyMap()).getBody();
-        String velocityResult = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"Compressor-2017:DischargePressure\",\"order\": \"desc\"}]}", String.class, emptyMap()).getBody();
-        JSONObject jsonObject = new JSONObject(result);
+        String velocityResult = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"start\": \"1y-ago\",\"tags\":[{\"name\":\"[PredixU2]PGM_Fuel.Npt" +
+                "\",\"order\": \"desc\"}]}", String.class, emptyMap()).getBody();
+        JSONObject jsonObject = new JSONObject(result); 
         Double res = 0.0;
         JSONArray jsonArray = jsonObject.getJSONArray("tags");
         JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
@@ -95,12 +103,12 @@ public class QueryController {
         model.put("DischargePressure",Integer.toString(resV.intValue()));
         return new ModelAndView("index",model);
     }
-    public static double getValue(String inputString){
+    public static double getValue(String inputString) throws Exception{
         String[] result = inputString.split(",");
         return Double.parseDouble(result[1]);
     }
         @RequestMapping("/timeseries")
-        public String timeSeries(String start, String end , String tag){
+        public String timeSeries(String start, String end , String tag) throws Exception{
             if(start==null && end==null || start.equals("NaN")){
             String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\"ALTUS TEMP SUM\",\"order\": \"desc\"}],\"start\": 1452112200000,\n" +
             "  \"end\": 1513049857000}", String.class, emptyMap()).getBody();
@@ -118,7 +126,7 @@ public class QueryController {
             }
         }
         @RequestMapping("/login")
-        public String loginValidate(String username, String password){
+        public String loginValidate(String username, String password) throws Exception{
             if(username.equals("zsse") && password.equals("zsse123")){
             return "ok";
             }

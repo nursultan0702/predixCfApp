@@ -1,6 +1,6 @@
 ---
 applications:
-  - name: demo-ts-app
+  - name: zeinetsse-ts-app
     buildpack: java_buildpack
     path: target/demo-ts-app.jar
-    memory: 1G
+    memory: 512mb

@@ -16,13 +16,13 @@ f<!DOCTYPE html>
 
         function init(){
             myMap = new ymaps.Map("map", {
-                center: [55.76, 37.64],
-                zoom: 7
+                center: [45.0444, 65.2694],
+                zoom: 9
             });
 
             myPlacemark = new ymaps.Placemark([55.76, 37.64], {
-                hintContent: 'Москва!',
-                balloonContent: 'Столица России'
+                hintContent: 'Караозек!',
+                balloonContent: 'Караозек'
             });
 
             myMap.geoObjects.add(myPlacemark);
@@ -145,8 +145,7 @@ f<!DOCTYPE html>
             <!-- Pie Chart-->
             <div class="col-lg-4 col-md-6" style="padding-left: 110px;">
               <div class="wrapper project-progress">
-                <h2 class="display h4">Temperature</h2>
-                <p>Temperature average values</p>
+                <h2 class="display h4">NGP_U@</h2>
                 <div class="pie-chart">
                   <px-gauge  value = "{{DischargePressure}}"
                              min="0"
@@ -164,8 +163,7 @@ f<!DOCTYPE html>
             <!-- Line Chart -->
             <div class="col-lg-4 col-md-6" style="padding-left: 120px;">
               <div class="wrapper sales-report">
-                <h2 class="display h4">Predix Chart</h2>
-                <p> px-simple-horizontal-bar-chart</p>
+                <h2 class="display h4">PredixU2.PGM_Fuel.Npt</h2>
                 <div class="line-chart">
                   <px-gauge  value = "{{gauge}}"
                              min="0"

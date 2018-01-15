@@ -77,7 +77,8 @@ function drawChart(jsonArr){
 
 }
         function logout() {
-            location.reload(true);
+           // location.reload(true);
+            location.replace("/");
         }
         function todate(stampDate){
             var date = new Date(stampDate*1);
@@ -99,7 +100,20 @@ function drawChart(jsonArr){
             if ($('#checkboxCustom1').prop('checked')) {
                 $("#myDivPoint").html("");
                 $("#myDivts").html("");
-                livedata();
+                var nameofTag = $("#stag").val();
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json",
+                    url: "/latest?tag="+nameofTag,
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+                        livedata(data);
+                    },
+                    error: function (e) {
+                        livedata(e.responseText);
+                    }
+                });
             } else {
                 $("#myDivts").html("");
                 $("#selectedTag").html("");
@@ -184,12 +198,13 @@ function drawChart(jsonArr){
 function rand() {
     return Math.random();
 }
-function livedata() {
+function livedata(jsonArr) {
     var time = new Date();
-
+        var str = jsonArr.toString().split(",");
+        dataArray.push(str[1]);
     var data = [{
-        x: [time],
-        y: [rand],
+        x: [[time]],
+        y: [[rand]],
         mode: 'lines',
         line: {color: '#80CAF6'}
     }]
@@ -199,8 +214,20 @@ function livedata() {
     var cnt = 0;
 
     var interval = setInterval(function() {
-
         var time = new Date();
+        var nameofTag = $("#stag").val();
+        /*$.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/latest?tag="+nameofTag,
+            success: function (data) {
+                var str = data.toString().split(",");
+                dataArray.push(str[1]);
+            },
+            async: false,
+            error: function (e) {
+            }
+        });*/
 
         var update = {
             x:  [[time]],
@@ -219,6 +246,7 @@ function livedata() {
 
         Plotly.relayout('graph', minuteView);
         Plotly.extendTraces('graph', update, [0])
+        dataArray = [];
 
         if(cnt === 100) clearInterval(interval);
     }, 1000);
