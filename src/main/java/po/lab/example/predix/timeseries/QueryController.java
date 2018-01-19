@@ -84,7 +84,7 @@ public class QueryController {
             JSONObject jsonObject = new JSONObject(result);
             Double res = 0.0;
             JSONArray jsonArray = jsonObject.getJSONArray("tags");
-            JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+            JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(1).getJSONArray("values");
             for (int i = 0; i < jsArray.length(); i++) {
                 res = res + getValue(jsArray.getJSONArray(i).toString());
             }
@@ -93,7 +93,7 @@ public class QueryController {
             JSONObject jsonObjectV = new JSONObject(velocityResult);
             Double resV = 0.0;
             JSONArray jsonArrayV = jsonObjectV.getJSONArray("tags");
-            JSONArray jsArrayV = jsonArrayV.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+            JSONArray jsArrayV = jsonArrayV.getJSONObject(0).getJSONArray("results").getJSONObject(1).getJSONArray("values");
             for (int i = 0; i < jsArrayV.length(); i++) {
                 resV = resV + getValue(jsArrayV.getJSONArray(i).toString());
             }
