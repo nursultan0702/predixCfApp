@@ -3,7 +3,7 @@ var dataArray = new Array();
 var dateArray = new Array();
 $(document).ready(function () {
     addTable();
-         $.ajax({
+             $.ajax({
                 type: "GET",
                 contentType: "application/json",
                 url: "/timeseries",
@@ -198,40 +198,36 @@ function drawChart(jsonArr){
 function rand() {
     return Math.random();
 }
+var iterat = 0;
 function livedata(jsonArr) {
+    if (iterat < 1) {
+        iterat=1;
     var time = new Date();
-        var str = jsonArr.toString().split(",");
-        dataArray.push(str[1]);
+    var datar = 0;
+    var str = jsonArr.toString().split(",");
+    //dataArray.push(str[1]);
+    datar = str[1];
     var data = [{
         x: [[time]],
-        y: [[rand]],
+        y: [[datar]],
         mode: 'lines',
         line: {color: '#80CAF6'}
     }]
 
     Plotly.plot('graph', data);
-
+}else
+{
     var cnt = 0;
 
-    var interval = setInterval(function() {
+    var interval = setInterval(function () {
         var time = new Date();
-        var nameofTag = $("#stag").val();
-        /*$.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "/latest?tag="+nameofTag,
-            success: function (data) {
-                var str = data.toString().split(",");
-                dataArray.push(str[1]);
-            },
-            async: false,
-            error: function (e) {
-            }
-        });*/
 
+        var str = jsonArr.toString().split(",");
+        //dataArray.push(str[1]);
+        datar = str[1];
         var update = {
-            x:  [[time]],
-            y: [[rand()]]
+            x: [[time]],
+            y: [[datar]]
         }
 
         var olderTime = time.setMinutes(time.getMinutes() - 1);
@@ -240,7 +236,7 @@ function livedata(jsonArr) {
         var minuteView = {
             xaxis: {
                 type: 'date',
-                range: [olderTime,futureTime]
+                range: [olderTime, futureTime]
             }
         };
 
@@ -248,9 +244,9 @@ function livedata(jsonArr) {
         Plotly.extendTraces('graph', update, [0])
         dataArray = [];
 
-        if(cnt === 100) clearInterval(interval);
+        if (cnt === 100) clearInterval(interval);
     }, 1000);
-
-
+}
+    updateDate();
 }
 
