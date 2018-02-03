@@ -121,15 +121,22 @@ public class QueryController {
             "  \"end\": 1513049857000}", String.class, emptyMap()).getBody();
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("tags");
-            JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+                JSONArray jsArray;
+                jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+
             return jsArray.toString();
             }else{
               String result = restTemplate.postForEntity(queryUrlPrefix + "/datapoints", "{\"cache_time\": 0,\"tags\":[{\"name\":\""+tag+"\",\"order\": \"desc\"}],\"start\": "+start+",\n" +
             "  \"end\": "+end+"}", String.class, emptyMap()).getBody();
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("tags");
-            JSONArray jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
-            return jsArray.toString();
+            JSONArray jsArray;
+                if(tag.equals("[PredixU2]PGM_Fuel.Npt") || tag.equals("NGP_U2")) {
+                    jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(1).getJSONArray("values");
+                } else {
+                    jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+                }
+             return jsArray.toString();
             }
         }
         @RequestMapping("/login")
