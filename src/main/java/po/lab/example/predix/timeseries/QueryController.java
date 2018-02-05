@@ -131,10 +131,10 @@ public class QueryController {
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("tags");
             JSONArray jsArray;
-                if(tag.equals("[PredixU2]PGM_Fuel.Npt") || tag.equals("NGP_U2")) {
+                jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
+                String[] strarr = jsArray.toString().split(",");
+                if(strarr[1].equals("null")) {
                     jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(1).getJSONArray("values");
-                } else {
-                    jsArray = jsonArray.getJSONObject(0).getJSONArray("results").getJSONObject(0).getJSONArray("values");
                 }
              return jsArray.toString();
             }
