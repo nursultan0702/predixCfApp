@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,14 +46,12 @@ public class Application {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("zsse").password("zsse123").roles("USER", "ADMIN");
+		auth.inMemoryAuthentication().withUser("1").password("1").roles("USER", "ADMIN");
 	}
         
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests()
-				.and().formLogin().defaultSuccessUrl("/**", false)
-                        .and().formLogin().defaultSuccessUrl("zeinetsse-ts-app.run.aws-usw02-pr.ice.predix.io/", false);
+		http.authorizeRequests().antMatchers("/**").permitAll();
 
 	}
 

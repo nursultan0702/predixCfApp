@@ -12,3 +12,6 @@ security.oauth2.client:
 
   spring.jpa.generate-ddl: true
   spring.resources.add-mappings: true
+
+security:
+    ignored: /**

@@ -188,4 +188,10 @@ public class QueryController {
             }
             return resultJson+="}";
         }
+
+        @RequestMapping("/getes")
+    public String getEs(){
+            String result = restTemplate.getForObject("http://localhost:9200/u3karaozek/_search?pretty=true&q=*:*", String.class);
+        return result;
+        }
 }
