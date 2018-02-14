@@ -1,6 +1,8 @@
 
 var dataArray = new Array();
 var dateArray = new Array();
+var dataArrayDb = new Array();
+var dateArrayDb = new Array();
 $(document).ready(function () {
     addTable();
              $.ajax({
@@ -13,6 +15,21 @@ $(document).ready(function () {
                     var AjsonArr = data;
                    drawChart(AjsonArr);
                   // pointChart(AjsonArr);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/db/getdb",
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var AjsonArr = data;
+                    drawChartfromDb(AjsonArr);
+                    // pointChart(AjsonArr);
                 },
                 error: function (e) {
                     console.log(e);
@@ -248,5 +265,55 @@ function livedata(jsonArr) {
     }, 1000);
 }
     updateDate();
+}
+function drawChartfromDb(json){
+    var jsonArr = JSON.parse(json);
+    for(var i=jsonArr.length-1; i>=0;i--){
+        var str = jsonArr[i].toString().split(",");
+        dateArrayDb.push(todate(str[0]));
+        dataArrayDb.push(str[1]);
+        var data = [
+            {
+                x: dateArrayDb,
+                y: dataArrayDb,
+                type: 'scatter'
+            }
+        ];
+    }
+    var layout = {
+        title: 'Timeseries',
+        xaxis: {
+            title: 'Date',
+            showgrid: false,
+            zeroline: false
+        },
+        yaxis: {
+            title: 'Unit',
+            showline: false
+        }
+    };
+    Plotly.newPlot('dbdiv', data,layout);
+    dataArrayDb = [];
+    dateArrayDb = [];
+
+}
+function getdatafromdb() {
+    var nameofTag = $("#stag").val();
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/db/getdb?tag="+nameofTag,
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+            var AjsonArr = data;
+            drawChartfromDb(AjsonArr);
+            // pointChart(AjsonArr);
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
 }
 

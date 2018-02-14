@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+import po.lab.example.predix.timeseries.Model.Unit1;
+import po.lab.example.predix.timeseries.Repository.Unit1Repository;
 
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +32,7 @@ public class QueryController {
     @Autowired
     @Qualifier("restTemplate")
     private RestTemplate restTemplate;
+
 
     @RequestMapping("/ping")
     public String ping(){
@@ -191,7 +192,8 @@ public class QueryController {
 
         @RequestMapping("/getes")
     public String getEs(){
-            String result = restTemplate.getForObject("http://localhost:9200/u3karaozek/_search?pretty=true&q=*:*", String.class);
+        String result = restTemplate.getForObject("http://localhost:9200/u3karaozek/_search?pretty=true&q=*:*", String.class);
         return result;
-        }
+    }
+
 }

@@ -1,8 +1,13 @@
+po\lab\example\predix\timeseries\DataBaseController.class
 po\lab\example\predix\timeseries\DataPointGenerator.class
 po\lab\example\predix\timeseries\QueryController.class
 po\lab\example\predix\timeseries\JsonResult.class
 po\lab\example\predix\timeseries\WebSocketUtils$1.class
 po\lab\example\predix\timeseries\Application.class
 po\lab\example\predix\timeseries\WebSocketClient.class
+po\lab\example\predix\timeseries\Model\Test.class
+po\lab\example\predix\timeseries\Model\Unit1.class
+po\lab\example\predix\timeseries\Repository\TestRepository.class
+po\lab\example\predix\timeseries\Repository\Unit1Repository.class
 po\lab\example\predix\timeseries\IngestController.class
 po\lab\example\predix\timeseries\WebSocketUtils.class

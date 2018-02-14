@@ -257,6 +257,63 @@ f<!DOCTYPE html>
                   <div id="graph"></div>
               </div>
           </div>
+
+          <div class="col-lg-12">
+            <!-- Income-->
+            <div class="container">
+              <select id="dbtag" class="form-control">
+                <option value="NGP">NGP</option>
+                <option value="NPT">NPT</option>
+                <option value="PCD">PCD</option>
+                <option value="T5_Average">T5_Average</option>
+                <option value="T5_Spread">T5_Spread</option>
+                <option value="Header_P">Header_P</option>
+                <option value="Header_T">Header_T</option>
+                <option value="T1">T1</option>
+                <option value="HPC_Suction_P">HPC_Suction_P</option>
+                <option value="HPC_Suction_T">HPC_Suction_T</option>
+                <option value="HPC_Disch_P">HPC_Disch_P</option>
+                <option value="HPC_Disch_T">HPC_Disch_T</option>
+                <option value="HPC_Eta_Nom">HPC_Eta_Nom</option>
+                <option value="HPC_Eta_Act">HPC_Eta_Act</option>
+                <option value="HPC_Flow_Act">HPC_Flow_Act</option>
+                <option value="HPC_Flow_Std">HPC_Flow_Std</option>
+                <option value="T5_TC1">T5_TC1</option>
+                <option value="T5_TC2">T5_TC2</option>
+                <option value="T5_TC3">T5_TC3</option>
+                <option value="T5_TC4">T5_TC4</option>
+                <option value="T5_TC5">T5_TC5</option>
+                <option value="T5_TC6">T5_TC6</option>
+                <option value="T5_TC7">T5_TC7</option>
+                <option value="T5_TC8">T5_TC8</option>
+                <option value="T5_TC9">T5_TC9</option>
+                <option value="T5_TC10">T5_TC10</option>
+                <option value="T5_TC11">T5_TC11</option>
+                <option value="T5_TC12">T5_TC12</option>
+                <option value="HPC_Ax_Disp">HPC_Ax_Disp</option>
+                <option value="GP_Ax_Disp">GP_Ax_Disp</option>
+                <option value="PT_Ax_Disp">PT_Ax_Disp</option>
+                <option value="Brg1_Drn_Temp">Brg1_Drn_Temp</option>
+                <option value="Brg1x_Vib">Brg1x_Vib</option>
+                <option value="Brg1y_Vib">Brg1y_Vib</option>
+                <option value="Brg2_3_Drn_Temp">Brg2_3_Drn_Temp</option>
+                <option value="Brg2x_Vib">Brg2x_Vib</option>
+                <option value="Brg2y_Vib">Brg2y_Vib</option>
+                <option value="Brg3x_Vib">Brg3x_Vib</option>
+                <option value="Brg3y_Vib">Brg3y_Vib</option>
+                <option value="Brg4_5_Drn_Temp">Brg4_5_Drn_Temp</option>
+                <option value="Brg4x_Vib">Brg4x_Vib</option>
+                <option value="Brg4y_Vib">Brg4y_Vib</option>
+                <option value="Brg5x_Vib">Brg5x_Vib</option>
+                <option value="Brg5y_Vib">Brg5y_Vib</option>
+                <option value="Gasfuel_Flow">Gasfuel_Flow</option>
+                <option value="Gasfuel_Press">Gasfuel_Press</option>
+              </select>
+              <button onclick="getdatafromdb()" class="btn btn-success">Update data</button>
+              <div id="dbdiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+            </div>
+          </div>
         </div>
       </section>
       <!-- Updates Section -->
