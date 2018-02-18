@@ -23,7 +23,7 @@ $(document).ready(function () {
             $.ajax({
                 type: "GET",
                 contentType: "application/json",
-                url: "/db/getdb",
+                url: "/db/getdb?tag=NGP",
                 cache: false,
                 timeout: 600000,
                 success: function (data) {
@@ -298,11 +298,12 @@ function drawChartfromDb(json){
 
 }
 function getdatafromdb() {
-    var nameofTag = $("#stag").val();
+    $("#dbdiv").html("");
+    var nameofdbTag = $("#dbtag").val();
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/db/getdb?tag="+nameofTag,
+        url: "/db/getdb?tag="+nameofdbTag,
         cache: false,
         timeout: 600000,
         success: function (data) {

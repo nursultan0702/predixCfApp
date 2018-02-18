@@ -261,7 +261,7 @@ f<!DOCTYPE html>
           <div class="col-lg-12">
             <!-- Income-->
             <div class="container">
-              <select id="dbtag" class="form-control">
+              <div class="col-lg-4"><label>Select tag</label><select id="dbtag" class="form-control">
                 <option value="NGP">NGP</option>
                 <option value="NPT">NPT</option>
                 <option value="PCD">PCD</option>
@@ -308,8 +308,8 @@ f<!DOCTYPE html>
                 <option value="Brg5y_Vib">Brg5y_Vib</option>
                 <option value="Gasfuel_Flow">Gasfuel_Flow</option>
                 <option value="Gasfuel_Press">Gasfuel_Press</option>
-              </select>
-              <button onclick="getdatafromdb()" class="btn btn-success">Update data</button>
+              </select></div> <br/>
+              <div class="col-lg-4"><button onclick="getdatafromdb()" class="btn btn-success">Update data</button></div>
               <div id="dbdiv"><!-- Plotly chart will be drawn inside this DIV --></div>
 
             </div>
