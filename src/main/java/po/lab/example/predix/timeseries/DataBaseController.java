@@ -34,7 +34,7 @@ public class DataBaseController {
 
         for(int i = 0; i<target.size(); i++) {
             Unit1 un = target.get(i);
-            Date parsedDate = dateFormat.parse(un.date);
+            Date parsedDate = dateFormat.parse(un.dateandtime);
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
             //result += (i == target.size() - 1) ? "[" + timestamp.getTime() + "," + un.Brg1_Drn_Temp + "," + un.id + " ]]" : "[" + timestamp.getTime() + "," + un.Brg1_Drn_Temp + "," + un.id + " ],";
             switch (tag) {

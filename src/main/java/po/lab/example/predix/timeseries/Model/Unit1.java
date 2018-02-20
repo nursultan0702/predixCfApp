@@ -9,7 +9,7 @@ public class Unit1 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer id;
-    public String date;
+    public String dateandtime;
     public Integer NGP;
     public Integer NPT;
     public Integer PCD;
