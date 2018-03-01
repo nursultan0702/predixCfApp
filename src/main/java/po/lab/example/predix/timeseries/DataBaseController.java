@@ -4,16 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import po.lab.example.predix.timeseries.Model.TagData;
 import po.lab.example.predix.timeseries.Model.Test;
 import po.lab.example.predix.timeseries.Model.Unit1;
 import po.lab.example.predix.timeseries.Repository.TestRepository;
 import po.lab.example.predix.timeseries.Repository.Unit1Repository;
 
-import java.sql.Timestamp;
+import javax.swing.text.html.HTML;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -180,6 +183,52 @@ public class DataBaseController {
 
             }
         }
+        return result;
+    }
+    @RequestMapping("/gettag")
+    public List testdb() throws ClassNotFoundException, SQLException {
+        List ll = new LinkedList();
+        Class.forName("com.mysql.jdbc.Driver") ;
+        Connection conn = DriverManager.getConnection("jdbc:mysql://80.241.40.230:3306/zsse", "userzsse", "Zeinet8sse") ;
+        Statement stmt = conn.createStatement() ;
+        String query = "SELECT `COLUMN_NAME` \n" +
+                "FROM `INFORMATION_SCHEMA`.`COLUMNS` \n" +
+                "WHERE `TABLE_SCHEMA`='zsse' \n" +
+                "    AND `TABLE_NAME`='Unit1';" ;
+        ResultSet rs = stmt.executeQuery(query) ;
+        while (rs.next()) {
+            String str = rs.getString("COLUMN_NAME");
+            ll.add(str);
+        }
+        rs.close();
+        return ll;
+    }
+    //result += (i == target.size() - 1) ? "[" + timestamp.getTime() + "," + un.NGP + "," + un.id + " ]]" : "[" + timestamp.getTime() + "," + un.NGP + "," + un.id + " ],";
+
+    @RequestMapping("/newtagvalue")
+    public String geTagsValue(String tag) throws ClassNotFoundException, SQLException {
+        TagData tagData = new TagData();
+        String result = "[";
+        List<TagData> ll = new ArrayList<>();
+        Class.forName("com.mysql.jdbc.Driver") ;
+        Connection conn = DriverManager.getConnection("jdbc:mysql://80.241.40.230:3306/zsse", "userzsse", "Zeinet8sse") ;
+        Statement stmt = conn.createStatement() ;
+        String query = "SELECT "+tag+",dateandtime FROM Unit1" ;
+        ResultSet rs = stmt.executeQuery(query) ;
+        int status = 0;
+        int numColumns = rs.getRow();
+        while (rs.next()) {
+            String value = rs.getString(tag);
+            String date = rs.getString("dateandtime");
+            tagData.setDate(date);
+            tagData.setValue(value);
+            ll.add(tagData);
+        }
+        for(TagData td : ll) {
+            status++;
+            result += (status<ll.size()) ? "[" + td.getDate() + "," + td.getValue() + "," + status + " ]]" : "[" + td.getDate() + "," + td.getValue() + "," + status + " ],";
+        }
+        rs.close();
         return result;
     }
 }

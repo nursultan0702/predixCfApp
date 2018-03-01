@@ -23,7 +23,7 @@ $(document).ready(function () {
             $.ajax({
                 type: "GET",
                 contentType: "application/json",
-                url: "/db/getdb?tag=NGP",
+                url: "/db/newtagvalue?tag=NGP",
                 cache: false,
                 timeout: 600000,
                 success: function (data) {
@@ -303,7 +303,7 @@ function getdatafromdb() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/db/getdb?tag="+nameofdbTag,
+        url: "/db/newtagvalue?tag="+nameofdbTag,
         cache: false,
         timeout: 600000,
         success: function (data) {
