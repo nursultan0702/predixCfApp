@@ -206,15 +206,16 @@ public class DataBaseController {
     //result += (i == target.size() - 1) ? "[" + timestamp.getTime() + "," + un.NGP + "," + un.id + " ]]" : "[" + timestamp.getTime() + "," + un.NGP + "," + un.id + " ],";
 
     @RequestMapping("/newtagvalue")
-    public String geTagsValue(String tag) throws ClassNotFoundException, SQLException {
+    public String geTagsValue(String tag) throws ClassNotFoundException, SQLException, ParseException {
         TagData tagData = new TagData();
         String result = "[";
         List<TagData> ll = new ArrayList<>();
         Class.forName("com.mysql.jdbc.Driver") ;
         Connection conn = DriverManager.getConnection("jdbc:mysql://80.241.40.230:3306/zsse", "userzsse", "Zeinet8sse") ;
         Statement stmt = conn.createStatement() ;
-        String query = "SELECT "+tag+",dateandtime FROM Unit1" ;
+        String query = "SELECT "+tag+",dateandtime FROM Unit1 order by dateandtime desc limit 5000" ;
         ResultSet rs = stmt.executeQuery(query) ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
         int status = 0;
         int numColumns = rs.getRow();
         while (rs.next()) {
@@ -226,9 +227,13 @@ public class DataBaseController {
         }
         for(TagData td : ll) {
             status++;
-            result += (status<ll.size()) ? "[" + td.getDate() + "," + td.getValue() + "," + status + " ]]" : "[" + td.getDate() + "," + td.getValue() + "," + status + " ],";
+            Date parsedDate = dateFormat.parse(td.getDate());
+            long date = parsedDate.getTime();
+            result += (status==ll.size()) ? "[" + date + "," + td.getValue() + "," + status + " ]]" : "[" + date + "," + td.getValue() + "," + status + " ],";
         }
         rs.close();
         return result;
     }
 }
+
+
